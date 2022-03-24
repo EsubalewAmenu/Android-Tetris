@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Arrange block Tetris</string>
+
+    <string name="adunit_bottom">ca-app-pub-9052706595490706/3437006928</string>
+    <string name="adunit_interstitial">ca-app-pub-9052706595490706/3133754595</string>
+    <string name="ad_app_id">ca-app-pub-9052706595490706~6063170261</string>
+
+
+<!--    <string name="adunit_bottom">ca-app-pub-3940256099942544/6300978111</string>-->
+<!--    <string name="adunit_interstitial">ca-app-pub-3940256099942544/1033173712</string>-->
+<!--    <string name="ad_app_id">ca-app-pub-3940256099942544~3347511713</string>-->
+
 </resources>

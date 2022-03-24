@@ -15,6 +15,13 @@ import android.os.Message;
 import android.util.DisplayMetrics;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
 import static android.content.Context.MODE_PRIVATE;
 
 public class TetrisCtrl extends View {
@@ -43,6 +50,9 @@ public class TetrisCtrl extends View {
     int mScore = 0;
     int mTopScore = 0;
 
+    private InterstitialAd mInterstitialAd;
+    MainActivity activity;
+
     Rect getBlockArea(int x, int y) {
         Rect rtBlock = new Rect();
         rtBlock.left = (int)(x * mBlockSize);
@@ -57,9 +67,10 @@ public class TetrisCtrl extends View {
         return rand;
     }
 
-    public TetrisCtrl(Context context) {
+    public TetrisCtrl(Context context, MainActivity mainActivity) {
         super(context);
         this.context = context;
+        activity = mainActivity;
         mPref = context.getSharedPreferences("info",MODE_PRIVATE);
         mTopScore = mPref.getInt("TopScore", 0);
     }
@@ -369,6 +380,31 @@ public class TetrisCtrl extends View {
 
     /*** Interface end ***/
 
+    private void showInterstitialAd() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(context,context.getString(R.string.adunit_interstitial), adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+//                        Log.i(TAG, "onAdLoaded");
+                        if (mInterstitialAd != null) {
+                            mInterstitialAd.show(activity);
+                        }
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+//                        Log.i(TAG, loadAdError.getMessage());
+                        mInterstitialAd = null;
+                    }
+                });
+
+    }
     void showDialog_GameOver() {
         mDlgMsg = new AlertDialog.Builder(context)
                 .setTitle("Notice")
@@ -378,6 +414,7 @@ public class TetrisCtrl extends View {
                             public void onClick(DialogInterface dialog, int which) {
                                 mDlgMsg = null;
                                 startGame();
+                                showInterstitialAd();
                             }
                         })
                 .show();

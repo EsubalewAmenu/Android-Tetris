@@ -12,11 +12,16 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 public class MainActivity extends Activity {
     TetrisCtrl mTetrisCtrl;
@@ -86,7 +91,7 @@ public class MainActivity extends Activity {
     }
 
     void initTetrisCtrl() {
-        mTetrisCtrl = new TetrisCtrl(this);
+        mTetrisCtrl = new TetrisCtrl(this, MainActivity.this);
         for(int i=0; i <= 7; i++) {
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.cell0 + i);
             mTetrisCtrl.addCellImage(i, bitmap);
