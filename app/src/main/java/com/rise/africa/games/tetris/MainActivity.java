@@ -12,6 +12,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
+
 public class MainActivity extends Activity {
     TetrisCtrl mTetrisCtrl;
     Point mScreenSize = new Point(0, 0);
@@ -19,6 +25,8 @@ public class MainActivity extends Activity {
     int mCellSize = 0;
     boolean mIsTouchMove = false;
     Button btnBottom, btnLeft, btnRight;
+
+    private AdView mAdViewBottom;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +71,18 @@ public class MainActivity extends Activity {
         mCellSize = (int)(mScreenSize.x / 8);
 
         initTetrisCtrl();
+
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
+
+        mAdViewBottom = findViewById(R.id.adViewBottom);
+        AdRequest adRequestBot = new AdRequest.Builder().build();
+        mAdViewBottom.loadAd(adRequestBot);
+
     }
 
     void initTetrisCtrl() {
